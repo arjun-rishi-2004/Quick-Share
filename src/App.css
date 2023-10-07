@@ -11,8 +11,9 @@
   margin-bottom: 20px;
 }
 
-input[type="text"] {
+textarea {
   flex: 1;
+  height: 100px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -84,7 +85,7 @@ button.share-button:hover {
 
 /* Responsive Styles for Mobile */
 @media (max-width: 600px) {
-  input[type="text"] {
+  textarea {
     width: 100%;
     margin-right: 0;
     margin-bottom: 10px;
@@ -94,24 +95,3 @@ button.share-button:hover {
     flex-direction: column;
   }
 }
-
-
-/* App.css */
-
-/* ... (previous styles) */
-
-pre {
-  white-space: pre-wrap;
-  font-family: monospace;
-  background-color: #f4f4f4;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 0;
-  overflow-x: auto;
-}
-
-code {
-  font-family: inherit;
-}
-
-/* ... (remaining styles) */
