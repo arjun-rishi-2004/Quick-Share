@@ -13,7 +13,13 @@ function App() {
     await addDoc(sharedCollectionRef, { text: sharedText });
     setSharedText("");
   }
+// ...
+const getSharedData = async () => {
+  const data = await getDocs(sharedCollectionRef);
+  setSharedData(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+}
 
+  
   const deleteSharedData = async (id) => {
     const sharedDoc = doc(db, "shared_data", id);
     await deleteDoc(sharedDoc);
