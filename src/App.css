@@ -1,4 +1,4 @@
-.App {
+I .App {
   text-align: center;
 }
 
@@ -150,5 +150,53 @@ input {
 .user-card .user-buttons button {
   margin: 5px;
   }
-  
+  .App {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  margin-right: 10px;
+  width: 200px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.shared-data {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.button-container {
+  margin-top: 10px;
+}
+
+.delete-button,
+.copy-button {
+  font-size: 14px;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.delete-button {
+  background-color: #ff6961;
+  color: #fff;
+}
+
+.copy-button {
+  background-color: #77dd77;
+  color: #fff;
+    }
+
   
