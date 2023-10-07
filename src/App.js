@@ -9,7 +9,7 @@ function App() {
   const [sharedData, setSharedData] = useState([]);
 
   const shareData = async () => {
-    await addDoc(sharedCollectionRef, { text: sharedText, timestamp: new Date() });
+    await addDoc(sharedCollectionRef, { text: sharedText });
     setSharedText("");
   }
 
@@ -28,33 +28,30 @@ function App() {
       setSharedData(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     }
     getSharedData();
-  }, [sharedText]); // Added sharedText to the dependency array
+  }, [sharedText]);
 
   return (
     <div className="App">
-    <h1>Hello</h1>
-      <input
-        type="text"
-        value={sharedText}
-        onChange={(event) => setSharedText(event.target.value)}
-        placeholder="Enter text to share"
-      />
-          
-      <button onClick={shareData}>Share</button>
-      {
-  sharedData.map(data => (
-    <div className="shared-data" key={data.id}>
-      <p>{data.text}</p>
-      {data.timestamp && <p>Shared on: {data.timestamp.toISOString()}</p>}
-      <div className="button-container">
-        <button onClick={() => deleteSharedData(data.id)} className="delete-button">Delete</button>
-        <button onClick={() => copyData(data.text)} className="copy-button">Copy</button>
+      <div className="input-container">
+        <input
+          type="text"
+          value={sharedText}
+          onChange={(event) => setSharedText(event.target.value)}
+          placeholder="Enter text to share"
+        />
+        <button onClick={shareData}>Share</button>
       </div>
-    </div>
-  ))
-}
-
-
+      {
+        sharedData.map(data => (
+          <div className="shared-data" key={data.id}>
+            <p>{data.text}</p>
+            <div className="button-container">
+              <button onClick={() => deleteSharedData(data.id)} className="delete-button">Delete</button>
+              <button onClick={() => copyData(data.text)} className="copy-button">Copy</button>
+            </div>
+          </div>
+        ))
+      }
     </div>
   )
 }
