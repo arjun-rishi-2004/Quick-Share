@@ -16,6 +16,8 @@ function App() {
   const deleteSharedData = async (id) => {
     const sharedDoc = doc(db, "shared_data", id);
     await deleteDoc(sharedDoc);
+        getSharedData();
+
   }
 
   const copyData = (text) => {
