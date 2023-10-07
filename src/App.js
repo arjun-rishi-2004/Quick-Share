@@ -1,82 +1,55 @@
+import './App.css';
 import { useState, useEffect } from 'react';
 import { db } from "./firebase-config";
-import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore";
-import './App.css';
+import { collection, getDocs, addDoc, doc, deleteDoc } from "firebase/firestore";
 
 function App() {
-  const [newName, setNewName] = useState("");
-  const [newAge, setNewAge] = useState(0);
-  const [users, setUsers] = useState([]);
-  const userCollectionRef = collection(db, "users");
+  // States for input and data
+  const [sharedText, setSharedText] = useState("");
+  const sharedCollectionRef = collection(db, "shared_data");
+  const [sharedData, setSharedData] = useState([]);
 
-  const createUser = async () => {
-    await addDoc(userCollectionRef, { Name: newName, Age: Number(newAge) });
-    setNewName("");
-    setNewAge(0);
-    getUsers();
-  };
+  // Function to share data
+  const shareData = async () => {
+    await addDoc(sharedCollectionRef, { text: sharedText, timestamp: new Date() });
+    setSharedText(""); // Reset input after sharing
+  }
 
-  const updateUser = async (id, Age) => {
-    const userDoc = doc(db, "users", id);
-    const newField = { Age: Age + 1 };
-    await updateDoc(userDoc, newField);
-    getUsers();
-  };
+  // Function to delete shared data
+  const deleteSharedData = async (id) => {
+    const sharedDoc = doc(db, "shared_data", id);
+    await deleteDoc(sharedDoc);
+  }
 
-  const deleteUser = async (id) => {
-    const userDoc = doc(db, "users", id);
-    await deleteDoc(userDoc);
-    getUsers();
-  };
-
-  const getUsers = async () => {
-    const data = await getDocs(userCollectionRef);
-    setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
-
+  // Fetch shared data
   useEffect(() => {
-    getUsers();
+    const getSharedData = async () => {
+      const data = await getDocs(sharedCollectionRef);
+      setSharedData(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    }
+    getSharedData();
   }, []);
 
   return (
     <div className="App">
-      <div className="input-container">
-        <label htmlFor="name">Name:</label>
-        <input
-          id="name"
-          type="text"
-          value={newName}
-          onChange={(event) => setNewName(event.target.value)}
-        />
-        <label htmlFor="age">Age:</label>
-        <input
-          id="age"
-          type="number"
-          value={newAge}
-          onChange={(event) => setNewAge(event.target.value)}
-        />
-        <button onClick={createUser}>Create User</button>
-      </div>
-      <div className="user-container">
-        {users.map((user) => (
-          <div className="user-card" key={user.id}>
-            <div className="user-info">
-              <div><strong>Name:</strong> {user.Name}</div>
-              <div><strong>Age:</strong> {user.Age}</div>
-            </div>
-            <div className="user-buttons">
-              <button className="increase-age-button" onClick={() => updateUser(user.id, user.Age)}>
-                Increase Age
-              </button>
-              <button className="delete-user-button" onClick={() => deleteUser(user.id)}>
-                Delete User
-              </button>
-            </div>
+      <input
+        type="text"
+        value={sharedText}
+        onChange={(event) => setSharedText(event.target.value)}
+        placeholder="Enter text to share"
+      />
+      <button onClick={shareData}>Share</button>
+      {
+        sharedData.map(data => (
+          <div key={data.id}>
+            <p>{data.text}</p>
+            <p>Shared on: {data.timestamp.toISOString()}</p>
+            <button onClick={() => deleteSharedData(data.id)}>Delete</button>
           </div>
-        ))}
-      </div>
+        ))
+      }
     </div>
-  );
+  )
 }
 
 export default App;
