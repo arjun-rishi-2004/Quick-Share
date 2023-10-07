@@ -7,6 +7,7 @@ function App() {
   const [sharedText, setSharedText] = useState("");
   const sharedCollectionRef = collection(db, "shared_data");
   const [sharedData, setSharedData] = useState([]);
+  const [copied, setCopied] = useState(false); // Added state for copy button
 
   const shareData = async () => {
     await addDoc(sharedCollectionRef, { text: sharedText });
@@ -16,12 +17,15 @@ function App() {
   const deleteSharedData = async (id) => {
     const sharedDoc = doc(db, "shared_data", id);
     await deleteDoc(sharedDoc);
-        getSharedData();
-
+    getSharedData();
   }
 
   const copyData = (text) => {
     navigator.clipboard.writeText(text);
+    setCopied(true); // Set copied state to true
+    setTimeout(() => {
+      setCopied(false); // Reset copied state after a brief delay
+    }, 1500);
   }
 
   useEffect(() => {
@@ -43,21 +47,19 @@ function App() {
         />
         <button onClick={shareData}>Share</button>
       </div>
-     // ...
-{
-  sharedData.map(data => (
-    <div className="shared-data" key={data.id}>
-      <pre><code>{data.text}</code></pre>
-      <div className="button-container">
-        <button onClick={() => deleteSharedData(data.id)} className="delete-button">Delete</button>
-        <button onClick={() => copyData(data.text)} className="copy-button">
-          {copied ? "Copied" : "Copy"}
-        </button>
-      </div>
-    </div>
-  ))
-}
-
+      {
+        sharedData.map(data => (
+          <div className="shared-data" key={data.id}>
+            <p>{data.text}</p>
+            <div className="button-container">
+              <button onClick={() => deleteSharedData(data.id)} className="delete-button">Delete</button>
+              <button onClick={() => copyData(data.text)} className="copy-button">
+                {copied ? "Copied" : "Copy"}
+              </button>
+            </div>
+          </div>
+        ))
+      }
     </div>
   )
 }
