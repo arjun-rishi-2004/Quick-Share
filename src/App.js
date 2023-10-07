@@ -42,17 +42,19 @@ function App() {
           
       <button onClick={shareData}>Share</button>
       {
-        sharedData.map(data => (
-          <div className="shared-data" key={data.id}>
-            <p>{data.text}</p>
-            <p>Shared on: {data.timestamp.toISOString()}</p>
-            <div className="button-container">
-              <button onClick={() => deleteSharedData(data.id)} className="delete-button">Delete</button>
-              <button onClick={() => copyData(data.text)} className="copy-button">Copy</button>
-            </div>
-          </div>
-        ))
-      }
+  sharedData.map(data => (
+    <div className="shared-data" key={data.id}>
+      <p>{data.text}</p>
+      {data.timestamp && <p>Shared on: {data.timestamp.toISOString()}</p>}
+      <div className="button-container">
+        <button onClick={() => deleteSharedData(data.id)} className="delete-button">Delete</button>
+        <button onClick={() => copyData(data.text)} className="copy-button">Copy</button>
+      </div>
+    </div>
+  ))
+}
+
+
     </div>
   )
 }
