@@ -45,8 +45,7 @@ const getSharedData = async () => {
   return (
     <div className="App">
       <div className="input-container">
-        <input
-          type="text"
+        <textarea
           value={sharedText}
           onChange={(event) => setSharedText(event.target.value)}
           placeholder="Enter text to share"
