@@ -32,12 +32,14 @@ function App() {
 
   return (
     <div className="App">
+    <h1>Hello</h1>
       <input
         type="text"
         value={sharedText}
         onChange={(event) => setSharedText(event.target.value)}
         placeholder="Enter text to share"
       />
+          
       <button onClick={shareData}>Share</button>
       {
         sharedData.map(data => (
