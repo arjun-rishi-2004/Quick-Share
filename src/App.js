@@ -1,82 +1,64 @@
+import './App.css';
 import { useState, useEffect } from 'react';
 import { db } from "./firebase-config";
-import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from "firebase/firestore";
-import './App.css';
+import { collection, getDocs, addDoc, doc, deleteDoc } from "firebase/firestore";
 
 function App() {
-  const [newName, setNewName] = useState("");
-  const [newAge, setNewAge] = useState(0);
-  const [users, setUsers] = useState([]);
-  const userCollectionRef = collection(db, "users");
+  const [sharedText, setSharedText] = useState("");
+  const sharedCollectionRef = collection(db, "shared_data");
+  const [sharedData, setSharedData] = useState([]);
 
-  const createUser = async () => {
-    await addDoc(userCollectionRef, { Name: newName, Age: Number(newAge) });
-    setNewName("");
-    setNewAge(0);
-    getUsers();
-  };
+  const shareData = async () => {
+    await addDoc(sharedCollectionRef, { text: sharedText });
+    setSharedText("");
+  }
+const  getSharedData = async () => { 
+  const data = await getDocs(sharedCollectionRef);   
+  setSharedData(data.docs.map(doc => ({ ...doc.data(), id: doc.id }))); }
 
-  const updateUser = async (id, Age) => {
-    const userDoc = doc(db, "users", id);
-    const newField = { Age: Age + 1 };
-    await updateDoc(userDoc, newField);
-    getUsers();
-  };
+  
+  const deleteSharedData = async (id) => {
+    const sharedDoc = doc(db, "shared_data", id);
+    await deleteDoc(sharedDoc);
+    getSharedData();
+  }
 
-  const deleteUser = async (id) => {
-    const userDoc = doc(db, "users", id);
-    await deleteDoc(userDoc);
-    getUsers();
-  };
-
-  const getUsers = async () => {
-    const data = await getDocs(userCollectionRef);
-    setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
+  const copyData = (text) => {
+    navigator.clipboard.writeText(text);
+  }
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    const getSharedData = async () => {
+      const data = await getDocs(sharedCollectionRef);
+      setSharedData(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    }
+    getSharedData();
+  }, [sharedText]);
 
   return (
     <div className="App">
       <div className="input-container">
-        <label htmlFor="name">Name:</label>
-        <input
-          id="name"
-          type="text"
-          value={newName}
-          onChange={(event) => setNewName(event.target.value)}
+        <textarea
+          value={sharedText}
+          onChange={(event) => setSharedText(event.target.value)}
+          placeholder="Enter text to share"
         />
-        <label htmlFor="age">Age:</label>
-        <input
-          id="age"
-          type="number"
-          value={newAge}
-          onChange={(event) => setNewAge(event.target.value)}
-        />
-        <button onClick={createUser}>Create User</button>
+        <button onClick={shareData}>Share</button>
       </div>
-      <div className="user-container">
-        {users.map((user) => (
-          <div className="user-card" key={user.id}>
-            <div className="user-info">
-              <div><strong>Name:</strong> {user.Name}</div>
-              <div><strong>Age:</strong> {user.Age}</div>
-            </div>
-            <div className="user-buttons">
-              <button className="increase-age-button" onClick={() => updateUser(user.id, user.Age)}>
-                Increase Age
-              </button>
-              <button className="delete-user-button" onClick={() => deleteUser(user.id)}>
-                Delete User
-              </button>
+      {
+        sharedData.map(data => (
+          <div className="shared-data" key={data.id}>
+            <pre>{data.text}</pre>
+            <div className="button-container">
+              <button onClick={() => deleteSharedData(data.id)} className="delete-button">Delete</button>
+              <button onClick={() => copyData(data.text)} className="copy-button">Copy</button>
             </div>
           </div>
-        ))}
-      </div>
+        ))
+      }
     </div>
-  );
+  )
 }
 
 export default App;
+  
