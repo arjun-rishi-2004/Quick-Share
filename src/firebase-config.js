@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 
 import {getFirestore} from "@firebase/firestore"
 
+import { getStorage,ref } from "firebase/storage";
 
 const firebaseConfig = {
 
@@ -24,8 +25,8 @@ const firebaseConfig = {
 };
 
 
-
 const app = initializeApp(firebaseConfig);
-
-
-export const db=getFirestore(app);
+const db = getFirestore(app);
+const storage = getStorage(app,"gs://crud-react-5439a.appspot.com");
+const storageref = ref(storage);
+export { db, storage,ref };
