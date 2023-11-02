@@ -5,27 +5,23 @@ import './App.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
+import SearchBar from './SearchBar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 
 function TextShare() {
   const [sharedText, setSharedText] = useState("");
   const sharedCollectionRef = collection(db, "shared_data");
   const [sharedData, setSharedData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const shareData = async () => {
     await addDoc(sharedCollectionRef, { text: sharedText });
     setSharedText("");
     getSharedData();
-
   }
 
   const getSharedData = async () => {
@@ -53,55 +49,46 @@ function TextShare() {
     getSharedData();
   }, []);
 
+  // Filter sharedData based on search query
+  const filteredSharedData = sharedData.filter(data =>
+    data.text.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
       <h2>Text Sharing</h2>
-    
-<TextField
-          id="outlined-multiline-flexible"
-          label="Enter your text here"
-          multiline
-          maxRows={20}
-          value={sharedText}
-          onChange={(event) => setSharedText(event.target.value)}
-        />
-    <Button onClick={shareData} variant="outlined" endIcon={<SendIcon />}>
+
+      <TextField
+        id="outlined-multiline-flexible"
+        label="Enter your text here"
+        multiline
+        maxRows={20}
+        value={sharedText}
+        onChange={(event) => setSharedText(event.target.value)}
+      />
+      <Button onClick={shareData} variant="outlined" endIcon={<SendIcon />}>
         Share
       </Button>
-   
+
+      {/* Add search bar */}
+      <SearchBar  value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
 
 
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-  
-
-  {
-  sharedData.map((data) => (
-          <Card 
-         key={data.id} sx={{ maxWidth: 345,padding:1, marginTop:1 }}>
-
-    
-
-    <CardContent>
-      {data.text}
-    </CardContent>
-
-
-    <CardActions>
-
-    <Button color="secondary" variant="outlined" onClick={() => copyData(data.text)}>Copy</Button>
-        <Button variant="outlined" onClick={() => deleteSharedData(data.id)} startIcon={<DeleteIcon />}>
-  Delete
-</Button>
-</CardActions>
-
-</Card>
-
-  ))}
-
-</List>
-
-
-
+        {filteredSharedData.map((data) => (
+          <Card key={data.id} sx={{ maxWidth: 345, padding: 1, marginTop: 1 }}>
+            <CardContent>
+              {data.text}
+            </CardContent>
+            <CardActions>
+              <Button color="secondary" variant="outlined" onClick={() => copyData(data.text)}>Copy</Button>
+              <Button variant="outlined" onClick={() => deleteSharedData(data.id)} startIcon={<DeleteIcon />}>
+                Delete
+              </Button>
+            </CardActions>
+          </Card>
+        ))}
+      </List>
     </div>
   );
 }

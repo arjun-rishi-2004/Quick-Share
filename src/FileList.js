@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteObject } from 'firebase/storage';
 import SendIcon from '@mui/icons-material/Send';
 import { TextField } from '@mui/material';
-
+import SearchBar from './SearchBar';
 function FileList() {
   const [files, setFiles] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,12 +40,7 @@ function FileList() {
   return (
     <div>
       <h2>Uploaded Files</h2>
-   
-      <TextField type="text"
-        placeholder="Search files..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value) }id="outlined-search" label="Search files" />
-
+<SearchBar onChange={(e) => setSearchQuery(e.target.value) } value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
 
       {files
         .filter((file) =>
