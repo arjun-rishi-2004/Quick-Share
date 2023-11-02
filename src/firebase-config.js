@@ -28,5 +28,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app,"gs://crud-react-5439a.appspot.com");
-const storageref = ref(storage);
+// const storageref = ref(storage);
 export { db, storage,ref };

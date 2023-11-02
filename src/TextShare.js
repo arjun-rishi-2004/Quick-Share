@@ -24,6 +24,8 @@ function TextShare() {
   const shareData = async () => {
     await addDoc(sharedCollectionRef, { text: sharedText });
     setSharedText("");
+    getSharedData();
+
   }
 
   const getSharedData = async () => {
@@ -74,7 +76,8 @@ function TextShare() {
 
   {
   sharedData.map((data) => (
-          <Card sx={{ maxWidth: 345,padding:1, marginTop:1 }}>
+          <Card 
+         key={data.id} sx={{ maxWidth: 345,padding:1, marginTop:1 }}>
 
     
 
