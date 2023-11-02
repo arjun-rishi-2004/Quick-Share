@@ -38,7 +38,7 @@ function App() {
  <center>
   <h1 className='animate-charcter
 '>Arjun Share </h1>
-<h4>"Effortless Sharing, No Sign-In Needed!"</h4>
+<h4>" Nambi Vaanga , Sandhosam ah Ponga ! "</h4>
  </center>
 
        <TabContext value={value} className="tab" >
