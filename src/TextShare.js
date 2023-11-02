@@ -2,6 +2,19 @@ import { useState, useEffect } from "react";
 import { db } from "./firebase-config";
 import { collection, getDocs, addDoc, doc, deleteDoc } from "firebase/firestore";
 import './App.css';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
+import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 
 function TextShare() {
   const [sharedText, setSharedText] = useState("");
@@ -41,21 +54,51 @@ function TextShare() {
   return (
     <div>
       <h2>Text Sharing</h2>
-      <textarea
-        value={sharedText}
-        onChange={(event) => setSharedText(event.target.value)}
-        placeholder="Enter text to share"
-      />
-      <button onClick={shareData}>Share Text</button>
-      <ul>
-        {sharedData.map(data => (
-          <li key={data.id}>
-            {data.text}
-            <button onClick={() => copyData(data.text)}>Copy</button>
-            <button onClick={() => deleteSharedData(data.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+    
+<TextField
+          id="outlined-multiline-flexible"
+          label="Enter your text here"
+          multiline
+          maxRows={20}
+          value={sharedText}
+          onChange={(event) => setSharedText(event.target.value)}
+        />
+    <Button onClick={shareData} variant="outlined" endIcon={<SendIcon />}>
+        Share
+      </Button>
+   
+
+
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+  
+
+  {
+  sharedData.map((data) => (
+          <Card sx={{ maxWidth: 345,padding:1, marginTop:1 }}>
+
+    
+
+    <CardContent>
+      {data.text}
+    </CardContent>
+
+
+    <CardActions>
+
+    <Button color="secondary" variant="outlined" onClick={() => copyData(data.text)}>Copy</Button>
+        <Button variant="outlined" onClick={() => deleteSharedData(data.id)} startIcon={<DeleteIcon />}>
+  Delete
+</Button>
+</CardActions>
+
+</Card>
+
+  ))}
+
+</List>
+
+
+
     </div>
   );
 }

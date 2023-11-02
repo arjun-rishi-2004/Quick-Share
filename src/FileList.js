@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { storage,ref } from "./firebase-config";
 import { listAll, getDownloadURL } from "firebase/storage";
+import Button from '@mui/joy/Button';
+import Card from '@mui/material/Card';
 
 function FileList() {
   const [files, setFiles] = useState([]);
@@ -24,16 +26,22 @@ function FileList() {
   return (
     <div>
       <h2>Uploaded Files</h2>
-      <ul>
+      
+
+
+
         {files.map((file) => (
-          <li key={file.name}>
+                <Card sx={{ maxWidth: 345,padding:1,marginTop:1 ,float:"left"}} key={file.name}>
             {file.name}{" "}
-            <a href={file.downloadUrl} target="_blank" rel="noopener noreferrer">
+            {/* <a href={file.downloadUrl} target="_blank" rel="noopener noreferrer">
               Download
-            </a>
-          </li>
+            </a> */}
+
+            <Button variant="outlined" component="a" href="#as-link"  href={file.downloadUrl} target="_blank" rel="noopener noreferrer">
+            Download</Button>
+
+            </Card>
         ))}
-      </ul>
     </div>
   );
 }
