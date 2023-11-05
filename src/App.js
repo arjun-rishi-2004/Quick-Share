@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import TabList from '@mui/lab/TabList';
 import TabContext from '@mui/lab/TabContext';
 import { CenterFocusStrong } from '@mui/icons-material';
+import VantaBirds from './VantaBirds'; // Import the component
 
 
 function App() {
@@ -31,20 +32,19 @@ function App() {
 
 
   return (
-    <div className="App ">
-
+    <div className="App">
       
  <div className='center-content' >
   <h1 className='animate-charcter'>Arjun Share </h1>
-<h4>" Nambi Vaanga , Sandhosam ah Ponga ! "</h4>
+<h4 className='sub-head'>" Nambi Vaanga , Sandhosam ah Ponga ! "</h4>
  </div>
  <div className='tab-center'>
 
        <TabContext value={value} className="tab" >
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Text Share" value="1" />
-            <Tab label="File Share" value="2" />
+            <Tab label="Text Share" value="1" sx={{ color: "#fff"}} />
+            <Tab label="File Share" value="2" sx={{ color: "#fff"}} />
           </TabList>
         </Box>
         <TabPanel value="1">
