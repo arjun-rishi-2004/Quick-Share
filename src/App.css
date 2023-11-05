@@ -1,3 +1,10 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh; /* Ensure it takes up at least the full height of the viewport */
+}
+
 .animate-charcter
 {
    text-transform: uppercase;
@@ -27,11 +34,40 @@
   }
 }
 
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25vh;
+}
+
+.loader img {
+  width: 100%; /* Adjust the width as needed */
+  height: auto;
+}
 
 
-  .word {
-    margin: auto;
-    color: white;
-    font: 700 normal 2.5em 'tahoma';
-    text-shadow: 5px 2px #222324, 2px 4px #222324, 3px 5px #222324;
+.center-content {
+  text-align: center;
+}
+@media (max-width: 600px) {
+  .animate-charcter
+{
+  font-size: 30px;
+}
+  .tab-center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+  
   }
+  
+.App{
+  margin-left: 14px;
+}
+  .center-content {
+    font-size: medium;
+    text-align: center;
+    margin-left: 14px;
+  }
+} 

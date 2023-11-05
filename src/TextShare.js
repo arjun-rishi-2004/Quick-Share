@@ -59,6 +59,7 @@ function TextShare() {
       <h2>Text Sharing</h2>
 
       <TextField
+      sx={{width:345}}
         id="outlined-multiline-flexible"
         label="Enter your text here"
         multiline
@@ -66,7 +67,7 @@ function TextShare() {
         value={sharedText}
         onChange={(event) => setSharedText(event.target.value)}
       />
-      <Button onClick={shareData} variant="outlined" endIcon={<SendIcon />}>
+      <Button onClick={shareData} variant="outlined" endIcon={<SendIcon />} sx={{marginTop:1}}>
         Share
       </Button>
 

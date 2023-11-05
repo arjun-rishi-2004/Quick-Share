@@ -38,7 +38,7 @@ function FileList() {
   };
 
   return (
-    <div>
+    <div >
       <h2>Uploaded Files</h2>
 <SearchBar onChange={(e) => setSearchQuery(e.target.value) } value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
 
@@ -47,10 +47,19 @@ function FileList() {
           file.name.toLowerCase().includes(searchQuery.toLowerCase())
         )
         .map((file) => (
-          <Card
-            sx={{ maxWidth: 345, padding: 1, marginTop: 1, float: 'left' }}
-            key={file.name}
-          >
+          <Card 
+          sx={{
+            minWidth: 345, 
+            padding: 1, 
+            marginTop: 3, 
+            float: 'left', 
+            width: '90%', // Set the width to 90% for mobile
+            margin: '0 auto', // Center the card horizontally
+            marginBottom: '20px' // Add some bottom margin for spacing
+          }}
+          key={file.name}
+        >
+        
             {file.name}{' '}
             <CardActions>
               <Button

@@ -1,6 +1,5 @@
 // App.js
 import React from 'react';
-
 import {useState} from 'react';
 import './App.css';
 import FileUpload from './FileUpload';
@@ -32,14 +31,14 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div className="App ">
 
       
- <center>
-  <h1 className='animate-charcter
-'>Arjun Share </h1>
+ <div className='center-content' >
+  <h1 className='animate-charcter'>Arjun Share </h1>
 <h4>" Nambi Vaanga , Sandhosam ah Ponga ! "</h4>
- </center>
+ </div>
+ <div className='tab-center'>
 
        <TabContext value={value} className="tab" >
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -48,17 +47,40 @@ function App() {
             <Tab label="File Share" value="2" />
           </TabList>
         </Box>
-        <TabPanel value="1"> <Card sx={{ width:345,maxWidth: 345,padding: 4 }}>
-      <TextShare />
-      </Card></TabPanel>
-        <TabPanel value="2"><Card sx={{ maxWidth: 345,padding: 8,position:"sticky" }}>
+        <TabPanel value="1">
+        <Card sx={{ 
+  maxWidth: 400, 
+  padding: 8, 
+  margin: '8px', 
+  boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',
+  '@media (max-width: 600px)': { // Apply styles for screens up to 600px wide (adjust as needed)
+    maxWidth: '90%', // Set the maximum width to 90% for mobile
+    margin: '0 auto', // Center the card horizontally
+  padding:2,
+  marginLeft:5
+  }
+}}>
+  <TextShare />
+</Card>
+
+      </TabPanel>
+        <TabPanel value="2">
+        <Card sx={{ margin: '0',maxWidth: 400,padding: 8,position:"sticky",  boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px', 
+         '@media (max-width: 600px)': { // Apply styles for screens up to 600px wide (adjust as needed)
+    maxWidth: '90%', // Set the maximum width to 90% for mobile
+    margin: '0 auto', // Center the card horizontally
+  padding:2,
+  marginLeft:5
+  }
+  }}>
         <FileUpload onUploadComplete={handleUploadComplete} />
-      <FileList key={uploadCount} />
+      <FileList  key={uploadCount} />
 </Card></TabPanel>
       </TabContext>
 
 
 
+    </div>
     </div>
 
   );

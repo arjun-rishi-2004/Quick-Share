@@ -6,15 +6,17 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import Loader from "./Loader"; // Add this line to import the Loader component
 
 function FileUpload({ onUploadComplete }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [fileName, setFileName] = useState("");
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
+    setFileName(selectedFile.name);
   };
 
   const handleUpload = async () => {
@@ -27,18 +29,57 @@ function FileUpload({ onUploadComplete }) {
     }
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const selectedFile = e.dataTransfer.files[0];
+    setFile(selectedFile);
+    setFileName(selectedFile.name);
+  };
+
   return (
     <div>
-      <h2>File Upload</h2>
-      <input type="file" onChange={handleFileChange} />
-      {uploading ? (
-        <Button variant="outlined" disabled>
-          <CircularProgress size={20} sx={{ marginRight: 1 }} /> Uploading
-        </Button>
+      { uploading ? (
+        <Loader /> // Use the Loader component when uploading
       ) : (
-        <Button onClick={handleUpload} variant="outlined" startIcon={<CloudUploadIcon />}>
-          Upload File
-        </Button>
+        <div>
+          <h2>File Upload</h2>
+          <label
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            style={{
+              border: "2px dashed #ccc",
+              borderRadius: "4px",
+              padding: "20px",
+              textAlign: "center",
+              cursor: "pointer",
+              display: "block",
+            }}
+          >
+            {fileName ? (
+              <div>
+                File Selected: {fileName}
+              </div>
+            ) : (
+              <div>
+                Drag and drop a file here or click to select one
+              </div>
+            )}
+            <input type="file" onChange={handleFileChange} style={{ display: 'none' }} />
+          </label>
+          {uploading ? (
+            <Button variant="outlined" disabled>
+              <CircularProgress size={20} sx={{ marginRight: 1 }} /> Uploading
+            </Button>
+          ) : (
+            <Button sx={{ marginTop:5,marginBottom:5 }}onClick={handleUpload} variant="outlined" startIcon={<CloudUploadIcon />}>
+              Upload File
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );
