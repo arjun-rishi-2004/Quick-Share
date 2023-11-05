@@ -65,14 +65,18 @@ function App() {
 
       </TabPanel>
         <TabPanel value="2">
-        <Card sx={{ margin: '0',maxWidth: 400,padding: 8,position:"sticky",  boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px', 
-         '@media (max-width: 600px)': { // Apply styles for screens up to 600px wide (adjust as needed)
+        <Card sx={{ 
+  maxWidth: 400, 
+  padding: 8, 
+  margin: '8px', 
+  boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',
+  '@media (max-width: 600px)': { // Apply styles for screens up to 600px wide (adjust as needed)
     maxWidth: '90%', // Set the maximum width to 90% for mobile
     margin: '0 auto', // Center the card horizontally
   padding:2,
   marginLeft:5
   }
-  }}>
+}}>
         <FileUpload onUploadComplete={handleUploadComplete} />
       <FileList  key={uploadCount} />
 </Card></TabPanel>

@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 function SearchBar({ value, onChange }) {
   return (
     <TextField
-    sx={{marginTop:5,width:345}}
+    sx={{marginTop:5,width:345,marginBottom:3}}
       type="text"
       placeholder="Search shared text..."
       value={value}

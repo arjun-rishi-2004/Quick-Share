@@ -12,6 +12,8 @@ function FileUpload({ onUploadComplete }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [fileName, setFileName] = useState("");
+  const [showLoader, setShowLoader] = useState(false);
+  const [uploadComplete, setUploadComplete] = useState(false);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -22,10 +24,18 @@ function FileUpload({ onUploadComplete }) {
   const handleUpload = async () => {
     if (file) {
       const storageRef = ref(storage, `uploaded_files/${file.name}`);
-      setUploading(true); // Set uploading state to true
+      setShowLoader(true); // Show loader when upload starts
       await uploadBytes(storageRef, file);
-      setUploading(false); // Set uploading state to false after upload
-      onUploadComplete();
+      setUploading(true); // Set uploading state to true
+      setTimeout(() => {
+        setShowLoader(false); // Hide loader after 5 seconds
+        setUploading(false); // Set uploading state to false after 5 seconds
+        setUploadComplete(true); // Set upload complete state
+        setTimeout(() => {
+          setUploadComplete(false); // Clear the message after 3 seconds
+        }, 3000);
+        onUploadComplete();
+      }, 5000);
     }
   };
 
@@ -42,11 +52,13 @@ function FileUpload({ onUploadComplete }) {
 
   return (
     <div>
-      { uploading ? (
-        <Loader /> // Use the Loader component when uploading
+      { (uploading || showLoader) ? (
+        <>
+          <Loader />
+        </>
       ) : (
         <div>
-          <h2>File Upload</h2>
+          <h2>File Sharing</h2>
           <label
             onDragOver={handleDragOver}
             onDrop={handleDrop}
@@ -79,6 +91,7 @@ function FileUpload({ onUploadComplete }) {
               Upload File
             </Button>
           )}
+          {uploadComplete && <h3>File Uploaded!</h3>} {/* Show message when upload is complete */}
         </div>
       )}
     </div>
