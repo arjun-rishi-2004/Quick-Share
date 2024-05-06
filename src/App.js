@@ -35,9 +35,9 @@ function App() {
     <div className="App">
       
  <div className='center-content' >
-//   <h1 className='animate-charcter'>Arjun Share </h1>
-// <h4 className='sub-head'>" Nambi Vaanga , Sandhosam ah Ponga ! "</h4>
-//  </div>
+<!-- <h1 className='animate-charcter'>Arjun Share </h1>
+ <h4 className='sub-head'>" Nambi Vaanga , Sandhosam ah Ponga ! "</h4>
+ </div> -->
  <div className='tab-center'>
 
        <TabContext value={value} className="tab" >
