@@ -1,6 +1,6 @@
 // App.js
 import React from 'react';
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import './App.css';
 import FileUpload from './FileUpload';
 import TextShare from './TextShare';
@@ -20,6 +20,9 @@ import VantaBirds from './VantaBirds'; // Import the component
 function App() {
 
   const [value, setValue] = React.useState('1');
+  const [input, setInput] = useState('');
+  const[displayType,setDisplayType]=useState("");
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -30,9 +33,34 @@ function App() {
     setUploadCount(uploadCount + 1); // Incrementing the count triggers a re-render
   };
 
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      const newInput = input + event.key.toLowerCase();
+    
+  
+     if (newInput.endsWith('evanesco')) {
+        // setBgColor('#ffff00'); // Change background color to yellow
+        setDisplayType("None")
+        setInput(''); // Reset input
+      } 
+      else if (newInput.endsWith('aparecium')) {
+        // setBgColor('#ffff00'); // Change background color to yellow
+        setDisplayType("flex")
+        setInput(''); // Reset input
+      } else {
+        setInput(newInput); // Update input if no cheat code is matched
+        
+    }
+    };
+
+    window.addEventListener('keypress', handleKeyPress);
+    return () => {
+      window.removeEventListener('keypress', handleKeyPress);
+    };
+  }, [input]); // Add input as a dependency
 
   return (
-    <div className="App">
+    <div className="App" style={{display: displayType }}  >
       
  <div className='center-content' >
 <h1 className='animate-charcter'>Arjun Share </h1>
