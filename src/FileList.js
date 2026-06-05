@@ -1,29 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { storage, ref } from './firebase-config';
-import { listAll, getDownloadURL } from 'firebase/storage';
+import { useState, useEffect } from 'react';
+import { supabase, BUCKET } from './supabase-config';
 import Button from '@mui/joy/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
-import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { deleteObject } from 'firebase/storage';
-import SendIcon from '@mui/icons-material/Send';
-import { TextField } from '@mui/material';
 import SearchBar from './SearchBar';
+
 function FileList() {
   const [files, setFiles] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchFiles = async () => {
-      const storageRef = ref(storage, 'uploaded_files');
-      const filesList = await listAll(storageRef);
-      const fileUrls = await Promise.all(
-        filesList.items.map(async (item) => ({
-          name: item.name,
-          downloadUrl: await getDownloadURL(item),
-        }))
-      );
+      const { data } = await supabase.storage.from(BUCKET).list();
+      if (!data) return;
+      const fileUrls = data.map((item) => ({
+        name: item.name,
+        downloadUrl: supabase.storage.from(BUCKET).getPublicUrl(item.name).data.publicUrl,
+      }));
       setFiles(fileUrls);
     };
 
@@ -31,16 +25,14 @@ function FileList() {
   }, []);
 
   const deleteFile = async (fileName) => {
-    const storageRef = ref(storage, `uploaded_files/${fileName}`);
-    await deleteObject(storageRef);
-    const updatedFiles = files.filter((file) => file.name !== fileName);
-    setFiles(updatedFiles);
+    await supabase.storage.from(BUCKET).remove([fileName]);
+    setFiles((prev) => prev.filter((file) => file.name !== fileName));
   };
 
   return (
     <div >
       <h2>Uploaded Files</h2>
-<SearchBar onChange={(e) => setSearchQuery(e.target.value) } value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+<SearchBar value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
 
       {files
         .filter((file) =>

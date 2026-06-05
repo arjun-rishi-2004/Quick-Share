@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { storage } from "./firebase-config";
-import { ref, uploadBytes } from "firebase/storage";
+import { supabase, BUCKET } from "./supabase-config";
 import './App.css';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -23,9 +22,8 @@ function FileUpload({ onUploadComplete }) {
 
   const handleUpload = async () => {
     if (file) {
-      const storageRef = ref(storage, `uploaded_files/${file.name}`);
-      setShowLoader(true); // Show loader when upload starts
-      await uploadBytes(storageRef, file);
+      setShowLoader(true);
+      await supabase.storage.from(BUCKET).upload(file.name, file, { upsert: true });
       setUploading(true); // Set uploading state to true
       setTimeout(() => {
         setShowLoader(false); // Hide loader after 5 seconds
